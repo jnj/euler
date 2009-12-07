@@ -16,7 +16,7 @@ class Fibs extends Iterator[Int] {
 
 object P2 {
   def apply() = {
-    val fibs = new Fibs
-    g.takeWhile {_ <= 4000000}.filter {_ % 2 == 0}.reduceLeft {_+_}
+    val f = new Fibs
+    f.takeWhile {_ <= 4000000}.filter {_ % 2 == 0}.reduceLeft {_+_}
   }
 }
