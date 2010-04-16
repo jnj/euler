@@ -15,6 +15,9 @@ object P5 {
       m += ((i, factorize(i).map { _.intValue }))
 
     val max = (a: Int, b: Int) => if (a > b) a else b
-    m.keys.toList.filter { (m(_).size == 1) }.map { p => round(pow(p, m.keys.map { m(_).filter { p == }.size }.reduceLeft(max)))}.reduceLeft {_*_}
+    val primes = m.keys.filter {(m(_).size == 1)}.toList
+    val maxOccurs = (p: Int) => m.keys.map {m(_).filter {p ==}.size}.reduceLeft(max)
+    val powers = primes.map(maxOccurs)
+    primes.zip(powers.toList).map {t => round(powt._1, t._2))}.reduceLeft {_*_}
   }
 }
