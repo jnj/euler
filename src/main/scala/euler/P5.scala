@@ -18,6 +18,6 @@ object P5 {
     val primes = m.keys.filter {(m(_).size == 1)}.toList
     val maxOccurs = (p: Int) => m.keys.map {m(_).filter {p ==}.size}.reduceLeft(max)
     val powers = primes.map(maxOccurs)
-    primes.zip(powers.toList).map {t => round(powt._1, t._2))}.reduceLeft {_*_}
+    primes.zip(powers.toList).map {t => round(pow(t._1, t._2))}.reduceLeft {_*_}
   }
 }
