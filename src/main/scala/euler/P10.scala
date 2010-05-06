@@ -6,9 +6,7 @@ import java.util.concurrent._
 class PrimesFinder(start: Int, stop: Int) extends Callable[List[Int]] {
   import Math._
 
-  def isPrime(n: Int) = {
-    !(2 to ceil(sqrt(n)).asInstanceOf[Int]).exists(n % _ == 0)
-  }
+  def isPrime(n: Int) = !(2 to ceil(sqrt(n)).asInstanceOf[Int]).exists(n % _ == 0)
 
   def call() = Stream.range(start, stop).filter(isPrime).force
 }
