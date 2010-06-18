@@ -24,7 +24,7 @@ object P11 {
 20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
-  val grid = s.trim.lines.flatMap {s => List.fromArray(s.split(' ')).elements}.map(_.toInt).toList
+  val grid = s.trim.lines.flatMap {s => s.split(' ').toList.iterator}.map(_.toInt).toList
 
   def foursFrom(t: (Int, Int)) = {
     val r = 0 to 3
@@ -44,6 +44,6 @@ object P11 {
     val products = (0 until grid.size).flatMap { i => 
       foursFrom(positionOf(i)).filter(_.forall(inBounds))
     }.map(_.map(valueAt)).filter(_.forall(0 !=)).map(_.reduceLeft(_*_))
-    products.toList.sort(_<_).reverse
+    products.toList.sortWith(_<_).reverse
   }
 }

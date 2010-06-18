@@ -3,12 +3,12 @@ package euler
 import java.util.ArrayList
 import java.util.concurrent._
 
-class PrimesFinder(start: Int, stop: Int) extends Callable[List[Int]] {
-  import Math._
+import scala.math._
 
+class PrimesFinder(start: Int, stop: Int) extends Callable[List[Int]] {
   def isPrime(n: Int) = !(2 to ceil(sqrt(n)).asInstanceOf[Int]).exists(n % _ == 0)
 
-  def call() = Stream.range(start, stop).filter(isPrime).force
+  def call() = Stream.range(start, stop).filter(isPrime).toList
 }
 
 object P10 {

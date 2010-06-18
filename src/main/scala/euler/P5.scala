@@ -4,7 +4,6 @@ import P3.factorize
 import Math._
 
 object P5 {
-  implicit def intToBigInt(n: Int): BigInt = BigInt(n)
   implicit def bigIntToInt(n: BigInt): Int = n.intValue
 
   def apply() = {
