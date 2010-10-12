@@ -23,6 +23,6 @@ object P3 {
 
   def apply() = {
     var i = BigInt("600851475143")
-    println(factorize(i).reduceLeft { (b,a) => if (a > b) a else b })
+    println(factorize(i).max)
   }
 }

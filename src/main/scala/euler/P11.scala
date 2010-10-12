@@ -43,7 +43,7 @@ object P11 {
   def apply() = {
     val products = (0 until grid.size).flatMap { i => 
       foursFrom(positionOf(i)).filter(_.forall(inBounds))
-    }.map(_.map(valueAt)).filter(_.forall(0 !=)).map(_.reduceLeft(_*_))
+    }.map(_.map(valueAt)).filter(_.forall(0 !=)).map(_.product)
     products.toList.sortWith(_<_).reverse
   }
 }
