@@ -1,33 +1,30 @@
 package euler
 
-import java.util.ArrayList
-import java.util.concurrent._
-
-import scala.math._
-
-class PrimesFinder(start: Int, stop: Int) extends Callable[List[Int]] {
-  def isPrime(n: Int) = !(2 to ceil(sqrt(n)).asInstanceOf[Int]).exists(n % _ == 0)
-  def call() = Stream.range(start, stop).filter(isPrime).toList
-}
-
 object P10 {
-  def apply() = {
-    val execSvc = Executors.newFixedThreadPool(2)
-    val callables = new ArrayList[Callable[List[Int]]]
-    
-    callables.add(new PrimesFinder(2, 500000))
-    callables.add(new PrimesFinder(500001, 1000000))
-    callables.add(new PrimesFinder(1000001, 1500000))
-    callables.add(new PrimesFinder(1500001, 2000000))
-    
-    val futures = execSvc.invokeAll(callables)
-    val it = futures.iterator()
-    var sum = BigInt(0)
+  import java.util.concurrent._
+  import scala.math._
+  import scalaz.concurrent._
+  import scalaz.Scalaz._
+  
+  implicit val pool = Executors.newFixedThreadPool(3)
+  implicit val strategy = Strategy.Executor
 
-    while (it.hasNext()) {
-      sum += it.next().get().foldLeft(BigInt(0)) {_+_}
+  def sumPrimes(range: Traversable[Int]): Promise[BigInt] = {
+    val isPrime = (n: Int) => {
+      val lim = ceil(sqrt(n)).asInstanceOf[Int]
+      !(2 to lim).exists(n % _ == 0)
     }
-    
-    sum
+    val isOdd = (i: Int) => i % 2 == 1
+    val zero = BigInt(0)
+    promise(range.filter(isOdd).filter(isPrime).foldLeft(zero) {_+_})
+  }
+
+  def apply() = {
+    try {
+      val promises = (2 to 2000000).grouped(500000).map(sumPrimes)
+      promises.foldLeft(BigInt(2)) {(s, p) => s + p.get}
+    } finally {
+      pool.shutdown()
+    }
   }
 }
