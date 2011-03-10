@@ -6,23 +6,20 @@ object P10 {
   import scalaz.concurrent._
   import scalaz.Scalaz._
   
-  implicit val pool = Executors.newFixedThreadPool(3)
-  implicit val strategy = Strategy.Executor
+  implicit val pool = Executors.newFixedThreadPool(2)
+  implicit val strategy = Strategy.Executor 
 
-  def sumPrimes(range: Traversable[Int]): Promise[BigInt] = {
-    val isPrime = (n: Int) => {
-      val lim = ceil(sqrt(n)).asInstanceOf[Int]
-      !(2 to lim).exists(n % _ == 0)
-    }
+  def sumPrimes(range: Traversable[Int]) = {
     val isOdd = (i: Int) => i % 2 == 1
     val zero = BigInt(0)
-    promise(range.filter(isOdd).filter(isPrime).foldLeft(zero) {_+_})
+    val primes = Primes.primes(range.head, range.last)
+    primes.foldLeft(zero) {_+_}
   }
 
   def apply() = {
     try {
-      val promises = (2 to 2000000).grouped(500000).map(sumPrimes)
-      promises.foldLeft(BigInt(2)) {(s, p) => s + p.get}
+      val sums = (2 to 2000000).grouped(500000).map(sumPrimes)
+      sums.foldLeft(BigInt(2)) {(s, p) => s + p}
     } finally {
       pool.shutdown()
     }
