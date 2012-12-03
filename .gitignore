@@ -1,3 +1,7 @@
+.ensime*
+.classpath
+.settings
+.project
 target/
 lib_managed/
 src_managed/
