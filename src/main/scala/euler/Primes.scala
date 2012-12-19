@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
 
 object Primes {
   def isPrime(a: Int) = {
-    a >= 2 && (2 to ceil(sqrt(a)).toInt).forall(a % _ != 0)
+    a == 2 || (a >= 2 && (2 to ceil(sqrt(a)).toInt).forall(a % _ != 0))
   }
 
   def primes(start: Int, stop: Int) = {
